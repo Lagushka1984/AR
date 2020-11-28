@@ -5,7 +5,7 @@
 
 int main (int argc, char *argv[]) 
 {
-  cv::Mat image=cv::imread("ar.png");
+  cv::Mat image=cv::imread("AR.png");
   if(image.empty())
   {
   	std::cerr << "Could not load image";
