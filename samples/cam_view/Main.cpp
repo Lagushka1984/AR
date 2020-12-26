@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-usernamespace cv;
+using namespace cv;
 
 int main(int argc, char* argv[])
 {
