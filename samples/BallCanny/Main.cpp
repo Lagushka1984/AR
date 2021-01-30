@@ -50,15 +50,17 @@ int main() {
 	Mat imgBlurred;         // blured image
 	Mat imgCanny;           // Canny edge image
  	char charCheckForEscKey = 0;
- 	int lowTh = 45;
- 	int highTh = 90;
  	Point Ball;
+ 	Point Last = Ball;
 	namedWindow("imgCanny", CV_WINDOW_NORMAL);
 
 	 while (charCheckForEscKey != 27) 
 	 {          
 		imgOriginal = cvQueryFrame(capture);
-		Ball = GetBall(imgOriginal);                
+		Ball = GetBall(imgOriginal);     
+		if (Ball != Point(0, 0)) Last = Ball;
+		else Ball = Last;       
+		cout<<Ball<<'\n';    
 		circle(imgOriginal, Ball, 4, Scalar(255, 0, 0), 3, CV_AA);  
 		imshow("imgCanny", imgOriginal);  
 		if(waitKey(33) == 27) break;
