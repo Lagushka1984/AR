@@ -76,7 +76,7 @@ int main(int argc, char **argv){
         }
         */
         imshow(mainWindow, frame);
-        imshow(thresholdWindow, threshold);nj6ffff
+        imshow(thresholdWindow, threshold);
         imshow(thresholdWindow1, threshold1);
         imshow(thresholdWindow2, threshold2);
         if(waitKey(33) == 27) break;
