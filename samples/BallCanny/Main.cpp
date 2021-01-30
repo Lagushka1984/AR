@@ -41,15 +41,20 @@ Point GetBall(Mat img)
 }
 
 int main() {
+	int trig = 0;
+	cin>>trig;
 	CvCapture* capture = cvCreateCameraCapture(1);  
 	cvSetCaptureProperty(capture, CV_CAP_PROP_FRAME_WIDTH, 320);
 	cvSetCaptureProperty(capture, CV_CAP_PROP_FRAME_HEIGHT, 240);
 	
-	Mat imgOriginal;     
+	Mat imgOriginal;        // input image
+	Mat imgGrayscale;       // grayscale image
+	Mat imgBlurred;         // blured image
+	Mat imgCanny;           // Canny edge image
  	char charCheckForEscKey = 0;
  	Point Ball;
  	Point Last = Ball;
-	namedWindow("imgCanny", CV_WINDOW_NORMAL);
+	if (trig == 1) namedWindow("imgCanny", CV_WINDOW_NORMAL);
 
 	 while (charCheckForEscKey != 27) 
 	 {          
@@ -59,8 +64,8 @@ int main() {
 		else Ball = Last;       
 		cout<<Ball<<'\n';    
 		circle(imgOriginal, Ball, 4, Scalar(255, 0, 0), 3, CV_AA);  
-		imshow("imgCanny", imgOriginal);  
-		if(waitKey(33) == 27) break;
+		if (trig == 1) imshow("imgCanny", imgOriginal);  
+		if (waitKey(33) == 27) break;
 	 }
 	return(0);
 }
