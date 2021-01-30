@@ -43,7 +43,7 @@ Point GetBall(Mat img)
 int main() {
 	int trig = 0;
 	cin>>trig;
-	CvCapture* capture = cvCreateCameraCapture(1);  
+	CvCapture* capture = cvCreateCameraCapture(0);  
 	cvSetCaptureProperty(capture, CV_CAP_PROP_FRAME_WIDTH, 320);
 	cvSetCaptureProperty(capture, CV_CAP_PROP_FRAME_HEIGHT, 240);
 	
