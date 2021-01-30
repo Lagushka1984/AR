@@ -45,10 +45,7 @@ int main() {
 	cvSetCaptureProperty(capture, CV_CAP_PROP_FRAME_WIDTH, 320);
 	cvSetCaptureProperty(capture, CV_CAP_PROP_FRAME_HEIGHT, 240);
 	
-	Mat imgOriginal;        // input image
-	Mat imgGrayscale;       // grayscale image
-	Mat imgBlurred;         // blured image
-	Mat imgCanny;           // Canny edge image
+	Mat imgOriginal;     
  	char charCheckForEscKey = 0;
  	Point Ball;
  	Point Last = Ball;
