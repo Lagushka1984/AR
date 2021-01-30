@@ -6,46 +6,62 @@
 using namespace cv;
 using namespace std;
 
-#define WINDOW 1;
+Point GetBall(Mat img)
+{
+	Point Balls[100];
+	int RD[100];
+	int count = 0;
+
+	cvtColor(img, img, CV_BGR2GRAY);                
+	GaussianBlur(img, img, Size(5, 5),1.8);  
+	Canny(img, img, 45, 90);  
+
+	vector<Vec3f> circles;
+	HoughCircles(img, circles, CV_HOUGH_GRADIENT, 1, img.rows/16, 100, 30, 1, 30);
+	for (size_t i = 0; i < circles.size(); i++)
+		{
+			Vec3i c = circles[i];
+			Point center = Point(c[0], c[1]);
+			Balls[i] = center;
+			RD[i] = c[2];
+			count++;
+		}
+
+	int max = 0;
+	Point Ball;
+	for (int i = 0; i < count; i++)
+	{
+		if (RD[i] > max)
+		{
+			Ball = Balls[i];
+			max = RD[i];
+		}
+	}
+	return Ball;
+}
 
 int main() {
-	CvCapture* capture = cvCreateCameraCapture(0);  
+	CvCapture* capture = cvCreateCameraCapture(1);  
 	cvSetCaptureProperty(capture, CV_CAP_PROP_FRAME_WIDTH, 320);
 	cvSetCaptureProperty(capture, CV_CAP_PROP_FRAME_HEIGHT, 240);
 	
-	cv::Mat imgOriginal;        // input image
-	cv::Mat imgGrayscale;       // grayscale image
-	cv::Mat imgBlurred;         // blured image
-	cv::Mat imgCanny;           // Canny edge image
-	cv::Mat bin;
-
+	Mat imgOriginal;        // input image
+	Mat imgGrayscale;       // grayscale image
+	Mat imgBlurred;         // blured image
+	Mat imgCanny;           // Canny edge image
  	char charCheckForEscKey = 0;
  	int lowTh = 45;
  	int highTh = 90;
+ 	Point Ball;
+	namedWindow("imgCanny", CV_WINDOW_NORMAL);
 
 	 while (charCheckForEscKey != 27) 
 	 {          
-		 imgOriginal = cvQueryFrame(capture);
-		 cv::cvtColor(imgOriginal, imgGrayscale, CV_BGR2GRAY);                
-		 cv::GaussianBlur(imgGrayscale,imgBlurred,cv::Size(5, 5),1.8);  
-		 cv::Canny(imgBlurred,imgCanny,lowTh,highTh);   
-
-		 vector<Vec3f> circles;
-		 HoughCircles(imgCanny, circles,CV_HOUGH_GRADIENT, 1, bin.rows/16, 100, 30, 1, 30);
-		 for (size_t i = 0; i < circles.size(); i++)
-		 {
-			 Vec3i c = circles[i];
-			 Point center = Point(c[0], c[1]);
-			 circle(imgCanny, center, 1, Scalar(0, 100, 100), 3, CV_AA);
-			 int radius = c[2];
-			 circle(imgCanny, center, radius, Scalar(255, 0, 255), 3, CV_AA);
-		 }
-		 
-		 if (WINDOW == 1)
-		 {    
-			 cv::namedWindow("imgCanny", CV_WINDOW_NORMAL);                    
-			 cv::imshow("imgCanny", imgCanny);   
-		 }
+		imgOriginal = cvQueryFrame(capture);
+		Ball = GetBall(imgOriginal);                
+		circle(imgOriginal, Ball, 4, Scalar(255, 0, 0), 3, CV_AA);  
+		imshow("imgCanny", imgOriginal);  
+		if(waitKey(33) == 27) break;
 	 }
 	return(0);
 }
